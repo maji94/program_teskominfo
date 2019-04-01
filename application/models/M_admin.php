@@ -93,12 +93,18 @@ class M_admin extends CI_Model {
     return $data->result_array();
   }
 
+  public function getNip($nip){
+    $data = $this->db->get_where('tb_pegawai', array('nip' => $nip));
+    return $data->result_array();
+  }
+
   public function getAbsen($user=null){
     $this->db->select('tp.nama, ta.*');
     $this->db->join('tb_absen ta', 'ta.nip = tp.nip');
     if ($user!=null) {
       $this->db->where('tp.nip', $user);
     }
+    $this->db->order_by('id','DESC');
     $data = $this->db->get('tb_pegawai tp');
     return $data->result_array();
   }

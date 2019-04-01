@@ -30,7 +30,7 @@ echo $this->session->flashdata('notif2');
             <?php echo form_open('admin/absensi/add'); ?>
             <div class="form-group">
               <label for="nip">NIP</label>
-              <input type="text" class="form-control" name="nip" id="nip" placeholder="SIlahkan masukkan NIP anda" onkeyup="cek_nip();">
+              <input type="text" class="form-control" name="nip" id="nip" placeholder="SIlahkan masukkan NIP anda" onkeyup="cek_nip();" maxlength="18" required="">
               <span class="error" id="pesan_error"></span>
             </div>
             <div class="form-group">
@@ -57,19 +57,19 @@ echo $this->session->flashdata('notif2');
               <label for="sub_jenis">Sub Jenis Keterangan</label>
               <select name="sub_jenis" id="sub_jenis" class="form-control">
                 <option value="0">-- Pilih ---</option>
-                <option value="cuti1" id="cuti1">Cuti Tahunan</option>
-                <option value="cuti2" id="cuti2">Cuti Alasan Penting</option>
-                <option value="cuti3" id="cuti3">Cuti Sakit</option>
-                <option value="cuti4" id="cuti4">Cuti Besar</option>
-                <option value="cuti5" id="cuti5">Cuti Bersalin</option>
-                <option value="cuti6" id="cuti6">Cuti Luar Tanggungan negara</option>
-                <option hidden="hidden" value="dinas1" id="dinas1">Dinas Dalam Daerah</option>
-                <option hidden="hidden" value="dinas2" id="dinas2">Dinas Luar Daerah</option>
-                <option hidden="hidden" value="dinas3" id="dinas3">Dinas Dalam Kota</option>
-                <option hidden="hidden" value="diklat1" id="diklat1">Diklat Teknis</option>
-                <option hidden="hidden" value="diklat2" id="diklat2">Diklat Struktural</option>
-                <option hidden="hidden" value="diklat3" id="diklat3">Diklat Struktur</option>
-                <option hidden="hidden" value="diklat4" id="diklat4">Tugas Belajar</option>
+                <option id="cuti1">Cuti Tahunan</option>
+                <option id="cuti2">Cuti Alasan Penting</option>
+                <option id="cuti3">Cuti Sakit</option>
+                <option id="cuti4">Cuti Besar</option>
+                <option id="cuti5">Cuti Bersalin</option>
+                <option id="cuti6">Cuti Luar Tanggungan negara</option>
+                <option hidden="hidden" id="dinas1">Dinas Dalam Daerah</option>
+                <option hidden="hidden" id="dinas2">Dinas Luar Daerah</option>
+                <option hidden="hidden" id="dinas3">Dinas Dalam Kota</option>
+                <option hidden="hidden" id="diklat1">Diklat Teknis</option>
+                <option hidden="hidden" id="diklat2">Diklat Struktural</option>
+                <option hidden="hidden" id="diklat3">Diklat Struktur</option>
+                <option hidden="hidden" id="diklat4">Tugas Belajar</option>
               </select>
             </div>
             <div class="form-group">
@@ -81,7 +81,7 @@ echo $this->session->flashdata('notif2');
               <textarea style="display: block;width: 100%;" name="keterangan" id="keterangan" rows="5" placeholder="Keterangan tambahan"></textarea>
             </div>
             <div class="form-group">
-              <label for="waktu">Tanggal Sekarang</label>
+              <label for="waktu">Tanggal Absen</label>
               <input type="date" readonly="" class="form-control" name="waktu" id="waktu" value="<?php echo date('Y-m-d'); ?>">
             </div>
             <div class="form-group">
@@ -118,8 +118,8 @@ echo $this->session->flashdata('notif2');
                     <td><?php echo $no; ?></td>
                     <td><?php echo $d['nip']; ?></td>
                     <td><?php echo $d['nama']; ?></td>
-                    <td><?php echo $d['waktu']; ?></td>
-                    <td><?php echo $d['jenis_ket']; ?></td>
+                    <td><?php echo date('d-m-Y', strtotime($d['waktu'])); ?></td>
+                    <td><?php echo strtoupper($d['jenis_ket']); ?></td>
                     <td><?php echo $d['sub_jenis']; ?></td>
                     <td>
                       <button style="width: 100%;margin-bottom: 3px" class="btn btn-sm btn-success"
@@ -163,84 +163,6 @@ echo $this->session->flashdata('notif2');
   </div>
 </div>
 
-<div class="modal fade" id="myModal2" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <?php echo form_open('#', 'class="form-horizontal"'); ?>
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Detail Berkas</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-group" style="margin-bottom: 0px;">
-            <input type="hidden" name="id" id="id">
-            <label for="tanggal" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;">Tanggal</label>
-            <div class="col-sm-9">
-              <label id="tanggal" class="control-label" style="text-transform: uppercase;"></label>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0px;">
-            <label for="no_paspor" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;">No Paspor</label>
-            <div class="col-sm-9">
-              <label id="no_paspor" class="control-label" style="text-transform: uppercase;"></label>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0px;">
-            <label for="nama" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;">Nama Penumpang</label>
-            <div class="col-sm-9">
-              <label id="nama" class="control-label" style="text-transform: uppercase;"></label>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0px;">
-            <label for="no_terbang" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;">No Penerbangan</label>
-            <div class="col-sm-9">
-              <label id="no_terbang" class="control-label" style="text-transform: uppercase;"></label>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0px;">
-            <label for="kebangsaan" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;">Kebangsaan</label>
-            <div class="col-sm-9">
-              <label id="kebangsaan" class="control-label" style="text-transform: uppercase;"></label>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0px;">
-            <label for="permasalahan" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;">Permasalahan</label>
-            <div class="col-sm-9">
-              <label id="permasalahan" class="control-label" style="text-transform: uppercase;"></label>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0px;">
-            <label for="terminal" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;">Terminal</label>
-            <div class="col-sm-9">
-              <label id="terminal" class="control-label" style="text-transform: uppercase;"></label>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0px;">
-            <label for="word" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;margin-bottom: 10px">Dokumen Word</label>
-            <div class="col-sm-9" style="padding-top: 7px;">
-              <a id="word" target="_blank" style="font-weight: 600;"></a>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0px;">
-            <label for="pdf" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;margin-bottom: 10px">Dokumen PDF</label>
-            <div class="col-sm-9" style="padding-top: 7px;">
-              <a id="pdf" target="_blank" style="font-weight: 600;"></a>
-            </div>
-          </div>
-          <div class="form-group" style="margin-bottom: 0px;">
-            <label for="foto" class="col-sm-3 control-label" style="text-align: left;font-weight: normal;margin-bottom: 10px">Foto</label>
-            <div class="col-sm-9" id="fotolist">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-warning" data-dismiss="modal">Kembali</button>
-        </div>
-      <?php echo form_close(); ?>
-    </div>
-  </div>
-</div>
-
 <div class="modal fade" id="ubah" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -248,11 +170,9 @@ echo $this->session->flashdata('notif2');
                 <h4 class="modal-title"><h4>Ubah Data Absen</h4></h4>
             </div>
             <div class="modal-body">
-               <form method="post" action="<?php echo base_url('absensi/ubah');?>" class="form-horizontal" enctype="multipart/form-data">
+               <form method="post" action="<?php echo site_url('admin/absensi/ubah');?>" class="form-horizontal" enctype="multipart/form-data">
                     <input type="hidden" name="id" id="id" value="">
 
-
-                    
                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                             <label for="email_address_2">Tanggal Absen</label>
                         </div>
@@ -337,19 +257,19 @@ echo $this->session->flashdata('notif2');
                                 <div class="form-line">
                                     <select name="sub_jenis2" id="sub_jenis2" class="form-control">
                                       <option value="0">-- Pilih ---</option>
-                                      <option value="cuti1" id="cuti12">Cuti Tahunan</option>
-                                      <option value="cuti2" id="cuti22">Cuti Alasan Penting</option>
-                                      <option value="cuti3" id="cuti32">Cuti Sakit</option>
-                                      <option value="cuti4" id="cuti42">Cuti Besar</option>
-                                      <option value="cuti5" id="cuti52">Cuti Bersalin</option>
-                                      <option value="cuti6" id="cuti62">Cuti Luar Tanggungan negara</option>
-                                      <option hidden="hidden" value="dinas12" id="dinas1">Dinas Dalam Daerah</option>
-                                      <option hidden="hidden" value="dinas22" id="dinas2">Dinas Luar Daerah</option>
-                                      <option hidden="hidden" value="dinas32" id="dinas3">Dinas Dalam Kota</option>
-                                      <option hidden="hidden" value="diklat12" id="diklat1">Diklat Teknis</option>
-                                      <option hidden="hidden" value="diklat22" id="diklat2">Diklat Struktural</option>
-                                      <option hidden="hidden" value="diklat32" id="diklat3">Diklat Struktur</option>
-                                      <option hidden="hidden" value="diklat42" id="diklat4">Tugas Belajar</option>
+                                      <option id="cuti12">Cuti Tahunan</option>
+                                      <option id="cuti22">Cuti Alasan Penting</option>
+                                      <option id="cuti32">Cuti Sakit</option>
+                                      <option id="cuti42">Cuti Besar</option>
+                                      <option id="cuti52">Cuti Bersalin</option>
+                                      <option id="cuti62">Cuti Luar Tanggungan negara</option>
+                                      <option hidden="hidden" id="dinas12">Dinas Dalam Daerah</option>
+                                      <option hidden="hidden" id="dinas22">Dinas Luar Daerah</option>
+                                      <option hidden="hidden" id="dinas32">Dinas Dalam Kota</option>
+                                      <option hidden="hidden" id="diklat12">Diklat Teknis</option>
+                                      <option hidden="hidden" id="diklat22">Diklat Struktural</option>
+                                      <option hidden="hidden" id="diklat32">Diklat Struktur</option>
+                                      <option hidden="hidden" id="diklat42">Tugas Belajar</option>
                                     </select>
                                 </div>
                             </div>
@@ -395,7 +315,7 @@ echo $this->session->flashdata('notif2');
                 <h4 class="modal-title"><h4>Hapus Data Absen</h4></h4>
             </div>
             <div class="modal-body">
-               <form method="post" action="<?php echo base_url('absensi/hapus');?>" class="form-horizontal">
+               <form method="post" action="<?php echo base_url('admin/absensi/hapus');?>" class="form-horizontal">
                 <div id="banner"></div>
                 <input type="hidden" name="id" value="" id="id">
             </div>

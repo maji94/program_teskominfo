@@ -35,44 +35,8 @@ class Admin extends CI_Controller {
 	}
 
 	public function main(){
-		// $terminal = $this->input->get('terminal');
-		// $jenis_lk = null;
-		// $mode = $this->input->get('mode');
-		// $cekData =$this->m_admin->cekData($terminal, $jenis_lk, $mode);
-
-
-		// if ($mode == 'bulan') {
-		// 	$labels = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");		
-		// 	if ($cekData) {
-		// 		for ($i=1; $i <= 12 ; $i++) { 
-		// 			$data[] = $this->m_admin->getDataBerkas($terminal, $jenis_lk, $mode,$i);
-		// 		}
-		// 	}else{
-		// 		$data = "kosong";
-		// 	}
-		// }else {
-		// 	$label = date('Y') - 5;
-		// 	for ($i=1; $i <= 5 ; $i++) {
-		// 		$label++;
-		// 		$labels[] = $label;
-		// 	}
-
-		// 	if ($cekData) {
-		// 		$tahun = date('Y') - 5;
-		// 		for ($i=1; $i <= 5 ; $i++) {
-		// 			$tahun++;
-		// 			$data[] = $this->m_admin->getDataBerkas($terminal, $jenis_lk, $mode, $tahun);
-		// 		}
-		// 	}else {
-		// 		$data = "kosong";
-		// 	}
-		// }
 
 		$data = array(
-			// 'terminal' => $terminal,
-			// 'mode'	=> $mode,
-			// 'labels' => $labels,
-			// 'data' => $data,
 			'page' => "konten/main_admin",
 		);
 
@@ -86,7 +50,7 @@ class Admin extends CI_Controller {
 	public function cek_nip(){
 		$nip = $_POST['nip'];
 		// $nip = "admin";
-		$cek = $this->m_admin->getAbsen($nip);
+		$cek = $this->m_admin->getNip($nip);
 
 		$data = array(
 			'nama'=> $cek[0]['nama'],
@@ -96,9 +60,6 @@ class Admin extends CI_Controller {
 		}else {
 			echo json_encode($data);
 		}
-
-		// echo "<pre>";
-		// print_r($data);
 	}
 
 	public function absensi(){
@@ -127,24 +88,40 @@ class Admin extends CI_Controller {
 					redirect('admin/absensi');
 				}
 		}else if ($link == "ubah") {
-			$where = array('id' => $id);
-			$ins_data = array(
-				'nip' => $this->input->post('nip'),
-				'tgl_mulai' => $this->input->post('tgl_mulai'),
-				'tgl_selesai' => $this->input->post('tgl_selesai'),
-				'jenis_ket' => $this->input->post('jenis_ket'),
-				'sub_jenis' => $this->input->post('sub_jenis'),
-				'nomor' => $this->input->post('nomor'),
-				'keterangan'	=> $this->input->post('keterangan'),
-				'waktu' => $this->input->post('waktu'),
+			$where = array('id' => $this->input->post('id'));
+			$upd_data = array(
+				'nip' => $this->input->post('nip2'),
+				'tgl_mulai' => $this->input->post('tgl_mulai2'),
+				'tgl_selesai' => $this->input->post('tgl_selesai2'),
+				'jenis_ket' => $this->input->post('jenis_ket2'),
+				'sub_jenis' => $this->input->post('sub_jenis2'),
+				'nomor' => $this->input->post('nomor2'),
+				'keterangan'	=> $this->input->post('keterangan2'),
+				'waktu' => $this->input->post('waktu2'),
 			);
 
+			echo "<pre>";
+			print_r($upd_data);
+			print_r($where);
+
 			$res = $this->m_admin->UpdateData($tableName, $upd_data, $where);
+			if ($res) {
+				$this->session->set_flashdata('notif','<section class="content" style="min-height: auto;"><div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Sukses</h4>Data berhasil disimpan.</div></section>');
+				redirect('admin/absensi');
+			}else{
+				$this->session->set_flashdata('notif','<section class="content" style="min-height: auto;"><div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Terjadi Kesalahan</h4>Data gagal disimpan.</div></section>');
+				redirect('admin/absensi');
+			}
+		}else if ($link == "hapus") {
+			$where = array('id' => $this->input->post('id'));
+
+			$res = $this->m_admin->DeleteData($tableName, $where);
 				if ($res) {
-					$this->session->set_flashdata('notif','<section class="content" style="min-height: auto;"><div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Sukses</h4>Data berhasil disimpan.</div></section>');
+					$this->session->set_flashdata('notif','<section class="content" style="min-height: auto;"><div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-check"></i> Sukses</h4>Data berhasil dihapus.</div></section>');
 					redirect('admin/absensi');
-				}else{
-					$this->session->set_flashdata('notif','<section class="content" style="min-height: auto;"><div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Terjadi Kesalahan</h4>Data gagal disimpan.</div></section>');
+				}
+				else{
+					$this->session->set_flashdata('notif','<section class="content" style="min-height: auto;"><div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Terjadi Kesalahan</h4>Data gagal dihapus.</div></section>');
 					redirect('admin/absensi');
 				}
 		}

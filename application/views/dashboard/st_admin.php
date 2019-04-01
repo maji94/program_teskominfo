@@ -34,7 +34,7 @@
             <ul class="nav navbar-nav">
             <?php $link=$this->uri->segment(2); ?>
               <li class="<?php if ($link=='main') {echo "active";} ?>"><a href="<?php echo site_url(); ?>"><i class="fa fa-home"></i> Beranda <span class="sr-only">(current)</span></a></li>
-              <li class="<?php if ($link=='berkas') {echo "active";} ?>"><a href="<?php echo site_url().'admin/absensi/'; ?>"><i class="fa fa-file-archive-o"></i> Absesni</a></li>
+              <li class="<?php if ($link=='berkas') {echo "active";} ?>"><a href="<?php echo site_url().'admin/absensi/'; ?>"><i class="fa fa-file-archive-o"></i> Absensi</a></li>
               <li class="<?php if ($link=='anggaran') {echo "active";} ?>"><a href="<?php echo site_url().'admin/anggaran/'; ?>"><i class="fa fa-dollar"></i> Data Anggaran</a></li>
             </ul>
           </div>
@@ -187,12 +187,9 @@
     var error = 0;
     function cek_nip() {
       $("#nama").val(' ');
+
       var nip = $("#nip").val();
-      if (nip=="") {
-        $("#pesan_error").css("color","#fc5d32");
-        $("#nip").css("border-color","#fc5d32");
-        $("#pesan_error").html("Silahkan masukkan nip");
-      }else{
+      
         $.ajax({
             url: "<?php echo base_url('admin/cek_nip') ?>",
             data: 'nip='+nip,
@@ -206,9 +203,8 @@
                     $("#nama").val(obj.nama);
 
                 }
-                $("#pesan_error").fadeIn(5000);
+                $("#pesan_error").fadeIn(500);
         });
-      }
     }
 
     function jenis_ket1(){
@@ -328,14 +324,14 @@
             
             var modal  = $(this)
 
-            modal.find('#id2').attr("value", id)
+            modal.find('#id').attr("value", id)
             modal.find('#waktu2').attr("value", waktu)
             modal.find('#nip2').attr("value", nip)
             modal.find('#nama2').attr("value", nama)
             modal.find('#tgl_mulai2').attr("value", tgl_mulai)
             modal.find('#tgl_selesai2').attr("value", tgl_selesai)
-            modal.find('#jenis_ket2').attr("value", jenis_ket)
-            modal.find('#sub_jenis2').attr("value", sub_jenis)
+            modal.find('#jenis_ket2').val(jenis_ket)
+            modal.find('#sub_jenis2').val(sub_jenis)
             modal.find('#nomor2').attr("value", nomor)
             modal.find('#keterangan2').attr("value", keterangan)
           
