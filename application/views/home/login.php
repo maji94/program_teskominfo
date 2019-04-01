@@ -58,7 +58,7 @@
             </div>
           </div>
         <?php echo form_close(); ?>
-      <h4 style="margin-top: 40px;text-align: right;color: green;font-weight: 600;">SIANTAR v1.0 &copy; 2018 <!-- <a href="#">IAIN BENGKULU</a> --></h4>
+      <h4 style="margin-top: 40px;text-align: right;color: green;font-weight: 600;">SIANTAR v1.0 &copy; 2019 <!-- <a href="#">IAIN BENGKULU</a> --></h4>
       </div>
     </div>
 
